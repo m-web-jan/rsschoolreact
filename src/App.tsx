@@ -3,6 +3,7 @@ import { getMovies } from './api/getAllPlanets';
 import './App.css';
 import NavBar from './components/Navigation';
 import ContentBlock from './components/contentBlock';
+import ErrorBoundary from './components/errorBlock';
 
 interface IFilm {
   title: string;
@@ -12,16 +13,18 @@ interface IFilm {
 interface IData {
   films: IFilm[];
   searchText: string;
+  throwError: boolean;
 }
 
-interface IAppState extends IData {}
+interface IAppState {}
 
-class App extends Component<object, IAppState> {
+class App extends Component<IAppState, IData> {
   constructor(props: object) {
     super(props);
     this.state = {
       films: [],
       searchText: '',
+      throwError: false,
     };
 
     this.search = this.search.bind(this);
@@ -52,11 +55,24 @@ class App extends Component<object, IAppState> {
     this.setState({ searchText: e.target.value });
   }
 
+  handleClick = () => {
+    this.setState({ throwError: true });
+  };
+
   render() {
     return (
       <div className="background">
-        <NavBar search={this.search} change={this.change} />
-        <ContentBlock films={this.state.films} />
+        <ErrorBoundary>
+          {this.state.throwError ? (
+            <div>Что-то пошло не так. Пожалуйста, перезагрузите страницу.</div>
+          ) : (
+            <>
+              <button onClick={this.handleClick}>Выбросить ошибку</button>
+              <NavBar search={this.search} change={this.change} />
+              <ContentBlock films={this.state.films} />
+            </>
+          )}
+        </ErrorBoundary>
       </div>
     );
   }
