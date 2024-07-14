@@ -24,7 +24,6 @@ class ErrorBoundary extends Component<IErrorBoundaryProps, IErrorBoundaryState> 
   }
 
   static getDerivedStateFromError(error: Error) {
-    console.log(123);
     console.error('Error caught by ErrorBoundary:', error);
     return { hasError: true };
   }

@@ -1,18 +1,16 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import './style.css';
 import ErrorBoundary from '../../components/errorBlock';
 import NavBar from '../../components/Navigation';
 import ContentBlock from '../../components/contentBlock';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getPlanets, getPlanetDetails } from '../../api/getAllPlanets';
+import Pagination from '../../components/pagination';
 
 interface IPlanet {
   name: string;
   terrain: string;
   population: string;
-  diameter: string;
-  climate: string;
-  gravity: string;
 }
 
 const useLocalStorage = (key: string, initialValue: string) => {
@@ -34,36 +32,39 @@ const MainPage = () => {
   const [searchText, setSearchText] = useLocalStorage('searchText', '');
   const [throwError, setThrowError] = useState<boolean>(false);
   const [selectedPlanet, setSelectedPlanet] = useState<IPlanet | null>(null);
-  const [inputText, setInputText] = useState<string>(searchText);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const location = useLocation();
   const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const currentPage = parseInt(params.get('page') || '1', 10);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const planetsData = await getPlanets(searchText);
-        setPlanets(planetsData);
+        const { planets: fetchedPlanets, count } = await getPlanets(searchText, currentPage);
+        setPlanets(fetchedPlanets);
+        setTotalPages(Math.ceil(count / 10)); // Assuming 10 items per page
       } catch (error) {
+        console.error('Error fetching planets:', error);
         setThrowError(true);
       }
     };
 
     fetchData();
-  }, [searchText]);
+  }, [searchText, currentPage]);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
     const detailsParam = params.get('details');
 
-    if (detailsParam && selectedPlanet === null) {
+    if (detailsParam !== null) {
       const index = parseInt(detailsParam, 10);
       if (!isNaN(index) && index >= 0 && index < planets.length) {
         const selected = planets[index];
         fetchPlanetDetails(selected);
       }
     }
-  }, [location.search, planets, selectedPlanet]);
+  }, [location.search, planets]);
 
   const fetchPlanetDetails = async (planet: IPlanet) => {
     try {
@@ -75,12 +76,8 @@ const MainPage = () => {
     }
   };
 
-  const search = () => {
-    setSearchText(inputText);
-  };
-
   const change = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value);
+    setSearchText(e.target.value);
   };
 
   const handleClick = () => {
@@ -88,33 +85,34 @@ const MainPage = () => {
   };
 
   const handlePlanetClick = (index: number) => {
-    navigate(`/?frontpage=${index}&details=${index}`);
-    const selected = planets[index];
-    fetchPlanetDetails(selected);
+    navigate(`/?page=${currentPage}&details=${index}`);
+    setSelectedPlanet(planets[index]); // Update selectedPlanet here
   };
 
   const closeDetails = () => {
     setSelectedPlanet(null);
-    navigate('/');
+    params.delete('details');
+    navigate({ search: params.toString() });
   };
 
   return (
     <div className="background">
       <ErrorBoundary>
         {throwError ? (
-          <div>Что-то пошло не так. Пожалуйста, перезагрузите страницу.</div>
+          <div>Something went wrong. Please reload the page.</div>
         ) : (
           <>
             <Link className="button" to={'/notfound'}>
               404
             </Link>
             <button className="button" onClick={handleClick}>
-              Выбросить ошибку
+              Throw Error
             </button>
-            <NavBar search={search} change={change} />
+            <NavBar change={change} />
             <div className="split-view">
               <div className="left-section">
                 <ContentBlock planets={planets} onItemClick={handlePlanetClick} />
+                <Pagination totalPages={totalPages} />
               </div>
               <div className="right-section">
                 {selectedPlanet ? (
@@ -122,12 +120,7 @@ const MainPage = () => {
                     <h2>{selectedPlanet.name}</h2>
                     <p>Terrain: {selectedPlanet.terrain}</p>
                     <p>Population: {selectedPlanet.population}</p>
-                    <p>Diameter: {selectedPlanet.diameter}</p>
-                    <p>Climate: {selectedPlanet.climate}</p>
-                    <p>Gravity: {selectedPlanet.gravity}</p>
-                    <button className="button border" onClick={closeDetails}>
-                      Close
-                    </button>
+                    <button onClick={closeDetails}>Close</button>
                   </>
                 ) : (
                   <p>Выберите планету, чтобы просмотреть подробности</p>

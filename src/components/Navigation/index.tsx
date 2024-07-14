@@ -18,21 +18,19 @@ const NavigationField = styled.div`
   }
 
   img {
-    cursor: pointer;
     width: 1.5rem;
   }
 `;
 
 interface NavBarProps {
-  search: () => void;
   change: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ search, change }) => {
+const NavBar: React.FC<NavBarProps> = ({ change }) => {
   return (
     <div>
       <NavigationField>
-        <img onClick={search} src="./icons/search.png" alt="searchIcon" />
+        <img src="./icons/search.png" alt="searchIcon" />
         <input type="text" placeholder="Поиск..." onChange={change} />
       </NavigationField>
     </div>

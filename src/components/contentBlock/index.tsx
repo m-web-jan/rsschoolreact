@@ -30,7 +30,7 @@ interface ContentBlockProps {
 }
 
 const ContentBlock: React.FC<ContentBlockProps> = ({ planets, onItemClick }) => {
-  if (planets.length === 0) {
+  if (planets?.length === 0) {
     return <LoadingText>Loading...</LoadingText>;
   }
 
@@ -41,7 +41,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({ planets, onItemClick }) => 
   return (
     <div>
       <Content>
-        {planets.map((planet, index) => (
+        {planets?.map((planet, index) => (
           <FilmCard key={index} planetData={planet} onClick={() => handleItemClick(index)} />
         ))}
       </Content>

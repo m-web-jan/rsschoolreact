@@ -1,21 +1,21 @@
-export async function getPlanets(searchTerm = '') {
+export async function getPlanets(searchTerm: string, page: number) {
   try {
-    const apiUrl = 'https://swapi.dev/api/planets/';
+    const apiUrl = `https://swapi.dev/api/planets/?page=${page}`;
     const response = await fetch(apiUrl);
     const data = await response.json();
 
     if (data.results && data.results.length > 0) {
-      const filteredPlanets = data.results.filter((planet: { name: string }) =>
+      const filteredPlanets = data.results.filter((planet) =>
         planet.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      return filteredPlanets;
+      return { planets: filteredPlanets, count: data.count };
     } else {
-      console.log('Планеты не найдены.');
-      return [];
+      console.log('No planets found.');
+      return { planets: [], count: 0 };
     }
   } catch (error) {
-    console.error('Ошибка при выполнении запроса к SWAPI:', error);
-    return [];
+    console.error('Error fetching planets from SWAPI:', error);
+    throw new Error('Failed to fetch planets');
   }
 }
 
