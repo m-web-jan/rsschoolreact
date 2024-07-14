@@ -2,6 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Card = styled.div`
+  &:hover {
+    transform: translateY(-5px);
+    transition: 0.3s;
+  }
+  transition: 0.3s;
   max-width: 250px;
   background-color: white;
   padding: 1rem;

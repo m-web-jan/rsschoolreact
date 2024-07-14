@@ -6,8 +6,9 @@ import ContentBlock from '../../components/contentBlock';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getPlanets, getPlanetDetails } from '../../api/getAllPlanets';
 import Pagination from '../../components/pagination';
+import CardDetails from '../../components/detailedCard';
 
-interface IPlanet {
+export interface IPlanet {
   name: string;
   terrain: string;
   population: string;
@@ -114,18 +115,7 @@ const MainPage = () => {
                 <ContentBlock planets={planets} onItemClick={handlePlanetClick} />
                 <Pagination totalPages={totalPages} />
               </div>
-              <div className="right-section">
-                {selectedPlanet ? (
-                  <>
-                    <h2>{selectedPlanet.name}</h2>
-                    <p>Terrain: {selectedPlanet.terrain}</p>
-                    <p>Population: {selectedPlanet.population}</p>
-                    <button onClick={closeDetails}>Close</button>
-                  </>
-                ) : (
-                  <p>Выберите планету, чтобы просмотреть подробности</p>
-                )}
-              </div>
+              <CardDetails selectedPlanet={selectedPlanet} closeDetails={closeDetails} />
             </div>
           </>
         )}

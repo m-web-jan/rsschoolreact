@@ -37,18 +37,3 @@ body {
   align-items: flex-start;
   padding: 20px;
 }
-
-.right-section {
-  margin-left: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.right-section h2 {
-  margin-top: 0;
-}
-
-.right-section p {
-  margin: 0.5rem 0;
-}
