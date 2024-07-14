@@ -26,7 +26,7 @@ interface IPlanet {
 
 interface ContentBlockProps {
   planets: IPlanet[];
-  onItemClick: (index: number) => void; // Callback for item click
+  onItemClick: (index: number) => void;
 }
 
 const ContentBlock: React.FC<ContentBlockProps> = ({ planets, onItemClick }) => {

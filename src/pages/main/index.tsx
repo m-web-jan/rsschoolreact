@@ -4,7 +4,7 @@ import ErrorBoundary from '../../components/errorBlock';
 import NavBar from '../../components/Navigation';
 import ContentBlock from '../../components/contentBlock';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getPlanets, getPlanetDetails } from '../../api/getAllPlanets'; // Assuming you have an API function for details
+import { getPlanets, getPlanetDetails } from '../../api/getAllPlanets';
 
 interface IPlanet {
   name: string;
@@ -33,11 +33,11 @@ const MainPage = () => {
   const [planets, setPlanets] = useState<IPlanet[]>([]);
   const [searchText, setSearchText] = useLocalStorage('searchText', '');
   const [throwError, setThrowError] = useState<boolean>(false);
-  const [selectedPlanet, setSelectedPlanet] = useState<IPlanet | null>(null); // Track selected planet for details
-  const [inputText, setInputText] = useState<string>(searchText); // New state for input text
+  const [selectedPlanet, setSelectedPlanet] = useState<IPlanet | null>(null);
+  const [inputText, setInputText] = useState<string>(searchText);
 
-  const location = useLocation(); // Access current location
-  const navigate = useNavigate(); // Access navigate function from react-router-dom
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,14 +53,12 @@ const MainPage = () => {
   }, [searchText]);
 
   useEffect(() => {
-    // Check if details section is opened based on URL params
     const params = new URLSearchParams(location.search);
     const detailsParam = params.get('details');
 
     if (detailsParam && selectedPlanet === null) {
       const index = parseInt(detailsParam, 10);
       if (!isNaN(index) && index >= 0 && index < planets.length) {
-        // Fetch details for the selected planet
         const selected = planets[index];
         fetchPlanetDetails(selected);
       }
@@ -69,7 +67,7 @@ const MainPage = () => {
 
   const fetchPlanetDetails = async (planet: IPlanet) => {
     try {
-      const details = await getPlanetDetails(planet.name); // Assuming getPlanetDetails fetches details
+      const details = await getPlanetDetails(planet.name);
       setSelectedPlanet({ ...planet, ...details });
     } catch (error) {
       console.error('Error fetching planet details:', error);
@@ -78,11 +76,11 @@ const MainPage = () => {
   };
 
   const search = () => {
-    setSearchText(inputText); // Update searchText with inputText only when search button is clicked
+    setSearchText(inputText);
   };
 
   const change = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value); // Update inputText state on input change
+    setInputText(e.target.value);
   };
 
   const handleClick = () => {
@@ -90,16 +88,14 @@ const MainPage = () => {
   };
 
   const handlePlanetClick = (index: number) => {
-    // Navigate to URL with details parameter
     navigate(`/?frontpage=${index}&details=${index}`);
-    // Fetch details for the clicked planet
     const selected = planets[index];
     fetchPlanetDetails(selected);
   };
 
   const closeDetails = () => {
     setSelectedPlanet(null);
-    navigate('/'); // Reset URL to remove details parameter
+    navigate('/');
   };
 
   return (
