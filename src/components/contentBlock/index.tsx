@@ -1,6 +1,6 @@
-import { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { FilmCard } from '../card';
+import FilmCard from '../card';
 
 const Content = styled.div`
   display: flex;
@@ -18,33 +18,35 @@ const LoadingText = styled.p`
   color: white;
 `;
 
-interface IFilm {
-  title: string;
-  opening_crawl: string;
+interface IPlanet {
+  name: string;
+  terrain: string;
+  population: string;
 }
 
 interface ContentBlockProps {
-  films: IFilm[];
+  planets: IPlanet[];
+  onItemClick: (index: number) => void; // Callback for item click
 }
 
-class ContentBlock extends Component<ContentBlockProps> {
-  render() {
-    const { films } = this.props;
-
-    if (films.length === 0) {
-      return <LoadingText>Loading...</LoadingText>;
-    }
-
-    return (
-      <div>
-        <Content>
-          {films.map((film, index) => (
-            <FilmCard key={index} filmData={film}></FilmCard>
-          ))}
-        </Content>
-      </div>
-    );
+const ContentBlock: React.FC<ContentBlockProps> = ({ planets, onItemClick }) => {
+  if (planets.length === 0) {
+    return <LoadingText>Loading...</LoadingText>;
   }
-}
+
+  const handleItemClick = (index: number) => {
+    onItemClick(index);
+  };
+
+  return (
+    <div>
+      <Content>
+        {planets.map((planet, index) => (
+          <FilmCard key={index} planetData={planet} onClick={() => handleItemClick(index)} />
+        ))}
+      </Content>
+    </div>
+  );
+};
 
 export default ContentBlock;

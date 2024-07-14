@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const Card = styled.div`
@@ -5,6 +6,7 @@ const Card = styled.div`
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
+  cursor: pointer;
   img {
     width: 100%;
   }
@@ -19,12 +21,24 @@ const Card = styled.div`
   }
 `;
 
-export const FilmCard = ({ ...props }) => {
+interface Props {
+  planetData: {
+    name: string;
+    terrain: string;
+    population: string;
+  };
+  onClick: () => void;
+}
+
+const FilmCard: React.FC<Props> = ({ planetData, onClick }) => {
   return (
-    <Card>
+    <Card onClick={onClick}>
       <img src="./images/swLogo.png" alt="swLogo" />
-      <h2>{props.filmData.title}</h2>
-      <p>{props.filmData.opening_crawl}</p>
+      <h2>{planetData.name}</h2>
+      <p>Terrain: {planetData.terrain}</p>
+      <p>Population: {planetData.population}</p>
     </Card>
   );
 };
+
+export default FilmCard;

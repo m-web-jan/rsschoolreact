@@ -4,26 +4,14 @@
   font-family: sans-serif;
 }
 
-body {
-  background: url(./images/background.jpg) no-repeat;
-  background-size: cover;
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-.background {
-  padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(4px);
-  min-height: 100vh;
-}
-
-.background > button {
-  padding: .5rem 1rem;
-  border: none;
-  border-radius: 1rem;
+::-webkit-scrollbar-thumb {
   cursor: pointer;
-  transition: .3s;
+  background: #666;
 }
-.background > button:hover {
-  transition: .3s;
-  filter: brightness(0.8);
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
