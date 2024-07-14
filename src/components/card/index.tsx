@@ -32,7 +32,7 @@ interface Props {
 
 const FilmCard: React.FC<Props> = ({ planetData, onClick }) => {
   return (
-    <Card onClick={onClick}>
+    <Card onClick={onClick} data-testid="film-card">
       <img src="./images/swLogo.png" alt="swLogo" />
       <h2>{planetData.name}</h2>
       <p>Terrain: {planetData.terrain}</p>

@@ -31,7 +31,7 @@ interface ContentBlockProps {
 
 const ContentBlock: React.FC<ContentBlockProps> = ({ planets, onItemClick }) => {
   if (planets?.length === 0) {
-    return <LoadingText>Loading...</LoadingText>;
+    return <LoadingText>Загрузка...</LoadingText>;
   }
 
   const handleItemClick = (index: number) => {

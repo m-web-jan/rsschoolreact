@@ -44,7 +44,7 @@ const MainPage = () => {
       try {
         const { planets: fetchedPlanets, count } = await getPlanets(searchText, currentPage);
         setPlanets(fetchedPlanets);
-        setTotalPages(Math.ceil(count / 10)); // Assuming 10 items per page
+        setTotalPages(Math.ceil(count / 10));
       } catch (error) {
         console.error('Error fetching planets:', error);
         setThrowError(true);
@@ -86,7 +86,7 @@ const MainPage = () => {
 
   const handlePlanetClick = (index: number) => {
     navigate(`/?page=${currentPage}&details=${index}`);
-    setSelectedPlanet(planets[index]); // Update selectedPlanet here
+    setSelectedPlanet(planets[index]);
   };
 
   const closeDetails = () => {

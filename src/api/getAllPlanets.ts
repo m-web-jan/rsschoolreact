@@ -5,7 +5,7 @@ export async function getPlanets(searchTerm: string, page: number) {
     const data = await response.json();
 
     if (data.results && data.results.length > 0) {
-      const filteredPlanets = data.results.filter((planet) =>
+      const filteredPlanets = data.results.filter((planet: { name: string }) =>
         planet.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       return { planets: filteredPlanets, count: data.count };
