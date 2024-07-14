@@ -1,0 +1,39 @@
+body {
+  background: url(./images/background.jpg) no-repeat;
+  background-size: cover;
+}
+
+.background {
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+  min-height: 100vh;
+}
+
+.button {
+  padding: .5rem 1rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: .3s;
+  background-color: white;
+  text-decoration: none;
+  color: black;
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+.button:hover {
+  transition: .3s;
+  filter: brightness(0.8);
+}
+.border {
+  padding: .2rem 1rem;
+  border: 1px solid black;
+}
+
+.split-view {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
